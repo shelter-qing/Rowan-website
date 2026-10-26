@@ -30,13 +30,14 @@
 ## 目录结构
 
 ```
-data.js                     项目数据（唯一数据源：分类、项目字段、图集、联系方式）
-app.js                      路由与页面渲染
-star-map.js                 Three.js 星图场景
-canvas-renderer.js          无 WebGL 时的兼容渲染
-styles.css                  全站样式
-index.html                  入口
-assets/projects/            项目效果图（WebP）与目录封面（SVG）
+dist/                       站点产物（发布目录，已入库）
+dist/index.html             入口
+dist/app.js                 路由与页面渲染
+dist/data.js                项目数据（唯一数据源：分类、项目字段、图集、联系方式）
+dist/star-map.js            Three.js 星图场景
+dist/canvas-renderer.js     无 WebGL 时的兼容渲染
+dist/styles.css             全站样式
+dist/assets/projects/       项目效果图（WebP）与目录封面（SVG）
 start-server.mjs            本地静态服务
 generate-project-covers.mjs 依据 data.js 生成目录封面 SVG
 build-project-images.py     原始素材批量转 WebP 并生成图集清单
@@ -65,7 +66,7 @@ project(id, title, shortTitle, en, cat, subcategory, group, summary, {
 });
 ```
 
-图片放入 `assets/projects/` 后引用即可，测试会校验引用文件是否真实存在。
+图片放入 `dist/assets/projects/` 后引用即可，测试会校验引用文件是否真实存在。
 
 ## 测试
 
@@ -77,7 +78,26 @@ npm test
 
 ## 部署
 
-仓库根目录即站点内容，可直接用 GitHub Pages（Source: `main` / 根目录）或任意静态托管发布。
+站点无构建步骤，产物在 `dist/` 且已提交入库。
+
+### Cloudflare Pages（当前使用）
+
+| 项 | 值 |
+| --- | --- |
+| 生产分支 | `main` |
+| 框架预设 | None |
+| 构建命令 | 留空（无构建步骤） |
+| 输出目录 | `dist` |
+
+推送到 `main` 即自动部署；部署失败时旧版本继续对外服务，可在 Cloudflare 控制台将任一历史部署 Roll back 为生产版本。
+
+### GitHub Pages
+
+站点内容在 `dist/` 而非仓库根目录，GitHub Pages 的「根目录」方式不再适用，需改用 Actions 发布。当前已改用 Cloudflare Pages。
+
+### 路由说明
+
+站点使用 hash 路由（`#/work/design`），子路由不向服务器请求路径，因此**不需要**配置 SPA 回退规则（`_redirects` / `/* → /index.html`），刷新也不会 404。
 
 ## 联系
 

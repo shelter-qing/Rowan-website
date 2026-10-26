@@ -1,0 +1,19 @@
+import fs from 'node:fs';
+import {projects,profile} from './dist/data.js';
+const directory=new URL('./dist/assets/projects/',import.meta.url);fs.mkdirSync(directory,{recursive:true});
+const drawings={
+ '2d':`<rect x="335" y="175" width="730" height="430" rx="16"/><path d="M335 229h730M620 229v376"/><circle cx="365" cy="202" r="4"/><circle cx="385" cy="202" r="4"/><rect x="365" y="265" width="220" height="35" rx="4"/><path d="M365 330h173M365 357h195M365 385h135"/><rect x="655" y="266" width="370" height="291" rx="10"/><path d="M685 512l82-84 70 36 89-122 72 47"/><circle cx="721" cy="322" r="17"/>`,
+ '3d':`<path d="m435 282 265-130 265 130v280L700 699 435 562Zm0 0 265 138 265-138M700 420v279M700 152v268"/><path d="m490 310 210-103 210 103v218L700 639 490 528Zm0 0 210 108 210-108M700 418v221" opacity=".3"/><path d="M365 713h670M365 713V212" opacity=".4"/>`,
+ power:`<path d="M580 148h245l-82 208h174L570 698l87-252H480Z"/><path d="M332 700h752M332 131v569M1084 131v569" opacity=".2"/><circle cx="351" cy="491" r="12"/><circle cx="1055" cy="261" r="12"/><path d="M351 479V239h142M1055 273v310H899"/>`,
+ product:`<path d="m380 277 320-130 320 130-320 131Zm0 0v239l320 169 320-169V277M700 408v277"/><path d="m430 293 270-106 270 106M421 506l279 143 279-143" opacity=".35"/><path d="M326 213v353M1074 213v353M413 740h571" opacity=".35"/><circle cx="700" cy="420" r="74"/><circle cx="700" cy="420" r="39"/>`,
+ embedded:`<rect x="505" y="242" width="390" height="334" rx="12"/><rect x="567" y="299" width="266" height="220" rx="8"/><circle cx="700" cy="409" r="68"/><circle cx="700" cy="409" r="36"/><path d="M370 320h135M370 405h135M370 490h135M895 320h135M895 405h135M895 490h135M590 127v115M700 127v115M810 127v115M590 576v115M700 576v115M810 576v115"/>`,
+ development:`<rect x="325" y="193" width="750" height="455" rx="18"/><path d="M325 250h750M375 222h5M400 222h5M425 222h5m150 110-95 88 95 88m250-176 95 88-95 88M746 296l-91 249"/><path d="M577 701h246M700 648v53"/>`,
+ vision:`<path d="M431 280v-97h97M872 183h97v97M969 535v97h-97M528 632h-97v-97"/><ellipse cx="700" cy="382" rx="125" ry="157"/><path d="M585 508q115 79 230 0M602 358h45M753 358h45M700 365v91M649 493h102"/><path d="M437 407h526" stroke-dasharray="6 12"/><circle cx="624" cy="358" r="7"/><circle cx="776" cy="358" r="7"/>`
+};
+for(const [i,p] of projects.entries()){
+ const code=String(i+1).padStart(2,'0'),kind=p.id==='gimbal-face-tracking'?'vision':p.subcategory;
+ const art=drawings[kind]||drawings.development;
+ const s=`<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900"><defs><radialGradient id="g"><stop stop-color="#11384d"/><stop offset="1" stop-color="#07121d"/></radialGradient><pattern id="grid" width="45" height="45" patternUnits="userSpaceOnUse"><path d="M45 0H0V45" fill="none" stroke="#67bdd9" stroke-opacity=".075"/></pattern></defs><rect width="1400" height="900" fill="#06101a"/><ellipse cx="700" cy="410" rx="610" ry="420" fill="url(#g)"/><rect width="1400" height="900" fill="url(#grid)"/><g fill="none" stroke="#76c9e4" stroke-width="2" opacity=".65">${art}</g><path d="M75 76h37M75 76v37M1325 76h-37M1325 76v37M75 824h37M75 824v-37M1325 824h-37M1325 824v-37" fill="none" stroke="#548ca4"/><text x="102" y="121" fill="#6b99ae" font-family="Arial,sans-serif" font-size="17" letter-spacing="5">${profile.englishName} / PROJECT ${code}</text><text x="102" y="779" fill="#91c8dd" font-family="Arial,sans-serif" font-size="25" letter-spacing="2">${p.en.replaceAll('&','&amp;')}</text><text x="102" y="815" fill="#577d91" font-family="Arial,sans-serif" font-size="12" letter-spacing="4">INDEX COVER / PROJECT IMAGERY TO FOLLOW</text></svg>`;
+ fs.writeFileSync(new URL(p.id+'.svg',directory),s);
+}
+console.log(`Generated ${projects.length} neutral project index covers.`);
