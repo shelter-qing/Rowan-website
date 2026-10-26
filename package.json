@@ -1,0 +1,15 @@
+{
+  "name": "rowan-atlas",
+  "version": "1.1.1",
+  "private": true,
+  "type": "module",
+  "description": "刘少卿 · rowan 个人项目履历网站",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node start-server.mjs",
+    "test": "node --test tests/portfolio.test.mjs",
+    "generate:assets": "node generate-project-covers.mjs"
+  }
+}
